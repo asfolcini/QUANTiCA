@@ -1,0 +1,101 @@
+
+version: '2'
+
+services:
+
+# -------------------------------------------------------------------------
+# NATS SERVER exposed ports 4222 (server) and 8222 (monitoring)
+# -------------------------------------------------------------------------
+  nats-server:
+    image: nats:latest
+    container_name: nats-srv
+    hostname: nats-srv
+    restart: unless-stopped
+    ports:
+      - "4222"
+      - "8222"
+    networks:
+      - "default"
+      - "quantica-network"
+
+# -------------------------------------------------------------------------
+# NATS BOARD listen on 4223
+# -------------------------------------------------------------------------
+  nats-board:
+    image: chrkaatz/natsboard
+    container_name: nats-board
+    hostname: nats-board
+    restart: unless-stopped
+    ports:
+      - "4223:3000"
+    networks:
+      - "default"
+      - "quantica-network"      
+
+# -------------------------------------------------------------------------
+# DB PERSISTENCE LAYER - MARIADB SRV 
+# -------------------------------------------------------------------------
+  quantica-db:
+    image: asfolcini/quantica-mariadb
+    container_name: quantica-mariadb
+    hostname: quantica-db
+    restart: unless-stopped
+    environment:
+      - MARIADB_ROOT_PASSWORD=quantica
+      - PGID=1000
+      - PUID=1000
+#    volumes:
+#      - c:/temp/DB:/var/lib/mysql
+#      - c:/temp/DB/logs/:/var/log/mysql
+    ports:
+      - "3306"
+    networks:
+      - "default"
+      - "quantica-network"      
+
+      
+# -------------------------------------------------------------------------
+# QUANTICA-DASHBOARD - Metabase
+#       docker run -d -p 3000:3000 
+# -------------------------------------------------------------------------
+  quantica-dashboard:
+    image: asfolcini/quantica-metabase
+    container_name: quantica-dashboard
+    hostname: quantica-dashboard
+    restart: unless-stopped
+    ports:
+      - "3000"
+    networks:
+      - "default"
+      - "quantica-network"      
+            
+     
+      
+# -------------------------------------------------------------------------
+# QUANTICA SERVER
+# -------------------------------------------------------------------------
+  quantica:
+    image: asfolcini/quantica
+    container_name: quantica
+    hostname: quantica-srv
+    restart: unless-stopped
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/London
+    volumes:
+      - c:/temp/tmp:/config
+    ports:
+      - "80"
+    networks:
+      - "default"
+      - "quantica-network"      
+      
+
+# -------------------------------------------------------------------------
+# NETWORKS LAYERS
+# -------------------------------------------------------------------------      
+networks:
+  quantica-network:
+
+
