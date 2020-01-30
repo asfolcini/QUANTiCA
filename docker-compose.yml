@@ -1,3 +1,13 @@
+# -------------------------------------------------------------------------
+# DOCKER COMPOSE FILE for QUANTiCA Algorithmic Trading Platform
+# -------------------------------------------------------------------------
+# 
+# http://getquantica.com
+# 
+# HOWTO
+# Please find [YOUR_LOCAL_PATH] and replace it with your own local path.
+#
+# -------------------------------------------------------------------------
 
 version: '2'
 
@@ -12,11 +22,8 @@ services:
     hostname: nats-srv
     restart: unless-stopped
     ports:
-      - "4222"
-      - "8222"
-    networks:
-      - "default"
-      - "quantica-network"
+      - "4222:4222"
+      - "8222:8222"
 
 # -------------------------------------------------------------------------
 # NATS BOARD listen on 4223
@@ -28,9 +35,6 @@ services:
     restart: unless-stopped
     ports:
       - "4223:3000"
-    networks:
-      - "default"
-      - "quantica-network"      
 
 # -------------------------------------------------------------------------
 # DB PERSISTENCE LAYER - MARIADB SRV 
@@ -48,10 +52,7 @@ services:
 #      - c:/temp/DB:/var/lib/mysql
 #      - c:/temp/DB/logs/:/var/log/mysql
     ports:
-      - "3306"
-    networks:
-      - "default"
-      - "quantica-network"      
+      - "3306:3306"
 
       
 # -------------------------------------------------------------------------
@@ -64,10 +65,7 @@ services:
     hostname: quantica-dashboard
     restart: unless-stopped
     ports:
-      - "3000"
-    networks:
-      - "default"
-      - "quantica-network"      
+      - "3000:3000"
             
      
       
@@ -84,18 +82,15 @@ services:
       - PUID=1000
       - TZ=Europe/London
     volumes:
+#      - [YOUR_LOCAL_PATH]:/config
       - c:/temp/tmp:/config
     ports:
-      - "80"
-    networks:
-      - "default"
-      - "quantica-network"      
+      - "80:80"
       
 
 # -------------------------------------------------------------------------
 # NETWORKS LAYERS
 # -------------------------------------------------------------------------      
-networks:
-  quantica-network:
+  
 
 
