@@ -33,6 +33,8 @@ services:
     container_name: nats-board
     hostname: nats-board
     restart: unless-stopped
+    environment:
+      - NATS_MON_URL=http://nats-srv:8222
     ports:
       - "4223:3000"
 
@@ -83,9 +85,10 @@ services:
       - TZ=Europe/London
     volumes:
 #      - [YOUR_LOCAL_PATH]:/config
-      - c:/temp/tmp:/config
+      - c:/QT/QUANTiCA-test:/config
     ports:
       - "80:80"
+      - "8081:8081"
       
 
 # -------------------------------------------------------------------------
