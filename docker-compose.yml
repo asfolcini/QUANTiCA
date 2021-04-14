@@ -55,20 +55,7 @@ services:
 #      - c:/temp/DB/logs/:/var/log/mysql
     ports:
       - "3306:3306"
-
-      
-# -------------------------------------------------------------------------
-# QUANTICA-DASHBOARD - Metabase
-#       docker run -d -p 3000:3000 
-# -------------------------------------------------------------------------
-  quantica-dashboard:
-    image: asfolcini/quantica-metabase
-    container_name: quantica-dashboard
-    hostname: quantica-dashboard
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-            
+          
      
       
 # -------------------------------------------------------------------------
