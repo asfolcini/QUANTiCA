@@ -26,17 +26,17 @@ services:
       - "8222:8222"
 
 # -------------------------------------------------------------------------
-# NATS BOARD listen on 4223
+# NATS BOARD listen on 4223   --- DEVELOP ONLY
 # -------------------------------------------------------------------------
-  nats-board:
-    image: chrkaatz/natsboard
-    container_name: nats-board
-    hostname: nats-board
-    restart: unless-stopped
-    environment:
-      - NATS_MON_URL=http://nats-srv:8222
-    ports:
-      - "4223:3000"
+#  nats-board:
+#    image: chrkaatz/natsboard
+#    container_name: nats-board
+#    hostname: nats-board
+#    restart: unless-stopped
+#    environment:
+#      - NATS_MON_URL=http://nats-srv:8222
+#    ports:
+#      - "4223:3000"
 
 # -------------------------------------------------------------------------
 # DB PERSISTENCE LAYER - MARIADB SRV 
@@ -51,8 +51,8 @@ services:
       - PGID=1000
       - PUID=1000
 #    volumes:
-#      - c:/temp/DB:/var/lib/mysql
-#      - c:/temp/DB/logs/:/var/log/mysql
+#      - c:/QT/QUANTiCA-workspace/DB:/var/lib/mysql
+#      - c:/QT/QUANTiCA-workspace/DB/logs/:/var/log/mysql
     ports:
       - "3306:3306"
           
@@ -61,9 +61,9 @@ services:
 # -------------------------------------------------------------------------
 # QUANTICA SERVER
 # -------------------------------------------------------------------------
-  quantica:
+  quantica-srv:
     image: asfolcini/quantica
-    container_name: quantica
+    container_name: quantica-srv
     hostname: quantica-srv
     restart: unless-stopped
     environment:
@@ -72,11 +72,32 @@ services:
       - TZ=Europe/London
     volumes:
 #      - [YOUR_LOCAL_PATH]:/config
-      - c:/QT/QUANTiCA-test:/config
+      - c:/QT/QUANTiCA-workspace:/config
+    ports:
+      - "8081:8081"
+
+# -------------------------------------------------------------------------
+# QUANTICA WORKBENCH
+# -------------------------------------------------------------------------
+  quantica-workbench:
+    image: asfolcini/quantica-workbench
+    container_name: quantica-workbench
+    hostname: quantica-workbench
+    restart: unless-stopped
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/London
+    volumes:
+# This path should be the same of one used in Quantica-server
+#      - [YOUR_LOCAL_PATH]:/config    
+      - c:/QT/QUANTiCA-workspace:/config
     ports:
       - "80:80"
-      - "8081:8081"
+      - "443:443"
       
+
+
 
 # -------------------------------------------------------------------------
 # NETWORKS LAYERS
