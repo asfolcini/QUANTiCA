@@ -6,6 +6,8 @@
 # 
 # HOWTO
 # Please find [YOUR_LOCAL_PATH] and replace it with your own local path.
+# If you do not specify a mount point on your local file system, a docker 
+# volume will be used instead with name quantica_workspace-volume.
 #
 # -------------------------------------------------------------------------
 
@@ -24,6 +26,11 @@ volumes:
       #device: [YOUR_LOCAL_PATH]
       device: c:/QT/QUANTiCA-workspace
   db-volume:  
+
+# Use these liens to use docker volume not mounted on your local file system
+#volumes:
+#  workspace-volume:    
+#  db-volume:  
 
 
 # -------------------------------------------------------------------------
