@@ -9,8 +9,32 @@
 #
 # -------------------------------------------------------------------------
 
-version: '2'
+version: "3.9"
 
+
+# -------------------------------------------------------------------------
+# VOLUMES
+# -------------------------------------------------------------------------      
+volumes:
+  workspace-volume:    
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      #device: [YOUR_LOCAL_PATH]
+      device: c:/QT/QUANTiCA-workspace
+  db-volume:  
+
+
+# -------------------------------------------------------------------------
+# NETWORKS LAYERS
+# -------------------------------------------------------------------------      
+
+
+
+# -------------------------------------------------------------------------
+# SERVICES
+# -------------------------------------------------------------------------      
 services:
 
 # -------------------------------------------------------------------------
@@ -50,9 +74,9 @@ services:
       - MARIADB_ROOT_PASSWORD=quantica
       - PGID=1000
       - PUID=1000
-#    volumes:
-#      - c:/QT/QUANTiCA-workspace/DB:/var/lib/mysql
-#      - c:/QT/QUANTiCA-workspace/DB/logs/:/var/log/mysql
+    volumes:
+      - db-volume:/var/lib/mysql
+      - db-volume:/var/log/mysql
     ports:
       - "3306:3306"
           
@@ -71,8 +95,7 @@ services:
       - PUID=1000
       - TZ=Europe/London
     volumes:
-#      - [YOUR_LOCAL_PATH]:/config
-      - c:/QT/QUANTiCA-workspace:/config
+       - workspace-volume:/config
     ports:
       - "8081:8081"
 
@@ -89,9 +112,7 @@ services:
       - PUID=1000
       - TZ=Europe/London
     volumes:
-# This path should be the same of one used in Quantica-server
-#      - [YOUR_LOCAL_PATH]:/config    
-      - c:/QT/QUANTiCA-workspace:/config
+      - workspace-volume:/config
     ports:
       - "80:80"
       - "443:443"
@@ -99,9 +120,6 @@ services:
 
 
 
-# -------------------------------------------------------------------------
-# NETWORKS LAYERS
-# -------------------------------------------------------------------------      
-  
+
 
 
