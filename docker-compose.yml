@@ -93,7 +93,7 @@ services:
 # QUANTICA SERVER
 # -------------------------------------------------------------------------
   quantica-srv:
-    image: asfolcini/quantica
+    image: asfolcini/quantica-srv
     container_name: quantica-srv
     hostname: quantica-srv
     restart: unless-stopped
