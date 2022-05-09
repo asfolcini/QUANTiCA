@@ -97,6 +97,9 @@ services:
     container_name: quantica-srv
     hostname: quantica-srv
     restart: unless-stopped
+    depends_on: 
+      - quantica-db
+      - nats-server
     environment:
       - PGID=1000
       - PUID=1000
